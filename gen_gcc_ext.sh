@@ -1,7 +1,7 @@
 #!/bin/bash
 
 base_module="sifive/freedom-tools/toolsuite"
-output_folder="./gcc-csv"
+output_folder="./csv"
 output_merged="gcc-ext.csv"
 
 # Toolchain versions
@@ -43,6 +43,12 @@ if [ ! -d "$output_folder" ] || [ $force_full -eq 1 ]; then
     output_file="$output_folder/gcc-$version.txt"
     if ! riscv64-unknown-elf-gcc -march=help > "$output_file"; then
       echo "[ERROR] GCC command failed for version $version"
+      continue
+    fi
+
+    output_file2="$output_folder/clang-$version.txt"
+    if ! riscv64-unknown-elf-clang --print-supported-extensions > "$output_file2"; then
+      echo "[ERROR] Clang command failed for version $version"
       continue
     fi
 
